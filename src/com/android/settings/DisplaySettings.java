@@ -98,7 +98,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
         }
 
         mScreenTimeoutPreference = (ListPreference) findPreference(KEY_SCREEN_TIMEOUT);
-        final long currentTimeout = Settings.System.getLong(resolver, SCREEN_OFF_TIMEOUT,
+        final long currentTimeout = Settings.System.getInt(resolver, SCREEN_OFF_TIMEOUT,
                 FALLBACK_SCREEN_TIMEOUT_VALUE);
         mScreenTimeoutPreference.setValue(String.valueOf(currentTimeout));
         mScreenTimeoutPreference.setOnPreferenceChangeListener(this);
@@ -156,6 +156,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                 Context.DEVICE_POLICY_SERVICE);
         final long maxTimeout = dpm != null ? dpm.getMaximumTimeToLock(null) : 0;
         if (maxTimeout == 0) {
+			Log.i(TAG, "disableUnusableTimeouts returning, policy not enforced");
             return; // policy not enforced
         }
         final CharSequence[] entries = screenTimeoutPreference.getEntries();
